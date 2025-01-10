@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -12,7 +12,15 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
-import { Search, Menu, X } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Search, Menu, X, User } from 'lucide-react'
 
 const categories = [
   {
@@ -31,6 +39,8 @@ const categories = [
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // In a real app, you would get this from your auth context/state
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   return (
     <nav className="border-b">
@@ -81,8 +91,42 @@ export default function Navbar() {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
-            <Button variant="outline">Sign In</Button>
-            <Button>Join</Button>
+            
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/settings">Settings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setIsAuthenticated(false)}>
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                  <Link href="/signin">Sign In</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/join">Join</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -124,10 +168,16 @@ export default function Navbar() {
                 ))}
               </div>
             ))}
-            <div className="px-3 py-4 space-y-2">
-              <Button variant="outline" className="w-full">Sign In</Button>
-              <Button className="w-full">Join</Button>
-            </div>
+            {!isAuthenticated && (
+              <div className="px-3 py-4 space-y-2">
+                <Button variant="outline" asChild className="w-full">
+                  <Link href="/signin">Sign In</Link>
+                </Button>
+                <Button asChild className="w-full">
+                  <Link href="/join">Join</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}

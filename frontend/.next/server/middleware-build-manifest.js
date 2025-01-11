@@ -1,21 +1,3 @@
-self.__BUILD_MANIFEST = {
-  "polyfillFiles": [
-    "static/chunks/polyfills.js"
-  ],
-  "devFiles": [],
-  "ampDevFiles": [],
-  "lowPriorityFiles": [],
-  "rootMainFiles": [
-    "static/chunks/webpack.js",
-    "static/chunks/main-app.js"
-  ],
-  "pages": {
-    "/_app": []
-  },
-  "ampFirstPages": []
-};
-self.__BUILD_MANIFEST.lowPriorityFiles = [
-"/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
-,"/static/" + process.env.__NEXT_BUILD_ID + "/_ssgManifest.js",
-
-];
+version https://git-lfs.github.com/spec/v1
+oid sha256:4a5524365c9bd00c58ef16a6719799da61ad9593060a9111e6c6df0fd2ab6a97
+size 474

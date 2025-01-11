@@ -20,7 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Search, Menu, X, User } from 'lucide-react'
+import { Search, Menu, X, User, CircleUserRound, MessageSquare, Bell } from 'lucide-react'
+import AuthenticatedNavbar from './AuthenticatedNavbar'
 
 const categories = [
   {
@@ -38,17 +39,17 @@ const categories = [
 ]
 
 export default function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   // In a real app, you would get this from your auth context/state
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  return (
+  return isAuthenticated ? <AuthenticatedNavbar /> : (
     <nav className="border-b">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold text-primary">
-            Freelance
+            TalentDAO
           </Link>
 
           {/* Desktop Navigation */}
@@ -91,35 +92,47 @@ export default function Navbar() {
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
-            
+
             {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link href="/profile">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link href="/settings">Settings</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setIsAuthenticated(false)}>
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <>
+                <Button variant="ghost" size="icon" asChild>
+                  <Link href="/messages">
+                    <MessageSquare className="h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="icon" asChild>
+                  <Link href="/notifications">
+                    <Bell className="h-5 w-5" />
+                  </Link>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <CircleUserRound className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link href="/profile">Profile</Link>
+                    </DropdownMenuItem>
+                    {/* <DropdownMenuItem>
+                      <Link href="/dashboard">Dashboard</Link>
+                    </DropdownMenuItem> */}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link href="/settings">Settings</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setIsAuthenticated(false)}>
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
             ) : (
               <>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild onClick={() => setIsAuthenticated(true)}>
                   <Link href="/signin">Sign In</Link>
                 </Button>
                 <Button asChild>
@@ -168,9 +181,30 @@ export default function Navbar() {
                 ))}
               </div>
             ))}
-            {!isAuthenticated && (
+            {isAuthenticated ? (
               <div className="px-3 py-4 space-y-2">
                 <Button variant="outline" asChild className="w-full">
+                  <Link href="/messages">Messages</Link>
+                </Button>
+                <Button variant="outline" asChild className="w-full">
+                  <Link href="/notifications">Notifications</Link>
+                </Button>
+                <Button variant="outline" asChild className="w-full">
+                  <Link href="/profile">Profile</Link>
+                </Button>
+                {/* <Button variant="outline" asChild className="w-full">
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button> */}
+                <Button variant="outline" asChild className="w-full">
+                  <Link href="/settings">Settings</Link>
+                </Button>
+                <Button variant="outline" className="w-full" onClick={() => setIsAuthenticated(false)}>
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <div className="px-3 py-4 space-y-2">
+                <Button variant="outline" asChild className="w-full" onClick={() => setIsAuthenticated(true)}>
                   <Link href="/signin">Sign In</Link>
                 </Button>
                 <Button asChild className="w-full">

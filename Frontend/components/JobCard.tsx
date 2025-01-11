@@ -1,3 +1,38 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:72e8e3a90b79ee5b541ca831c5230e6f6f71c855e1219d0c8b4f5e6ae5daca27
-size 1114
+import { TriangleIcon } from './TriangleIcon'
+
+interface JobCardProps {
+  job: {
+    id: number
+    title: string
+    company: string
+    duration: string
+    image: string
+    details: string
+    price: number
+    rating: number
+    reviews: number
+  }
+}
+
+function JobCard({ job }: JobCardProps) {
+  return (
+    <div className="bg-white shadow-md rounded-lg p-4 flex items-center">
+      <img src={job.image} alt={job.title} className="w-16 h-16 rounded-full mr-4" />
+      <div>
+        <h3 className="text-lg font-bold">{job.title}</h3>
+        <p className="text-gray-600">{job.company}</p>
+        <p className="text-gray-600">{job.duration}</p>
+      </div>
+      <div className="ml-auto flex items-center">
+        <p className="ml-auto font-bold">{job.price} ETH</p>
+        <div className="ml-2 flex items-center">
+          <TriangleIcon className="text-green-500 fill-green-500" />
+          <span className="text-gray-600 ml-1">{job.rating}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default JobCard;
+

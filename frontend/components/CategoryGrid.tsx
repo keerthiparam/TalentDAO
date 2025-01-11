@@ -1,6 +1,10 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 const categories = [
   {
@@ -43,30 +47,45 @@ const categories = [
 
 export default function CategoryGrid() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {categories.map((category) => (
-        <Link key={category.id} href={`/categories/${category.name.toLowerCase().replace(' & ', '-')}`}>
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4">
-                <div className="relative h-16 w-16">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                </div>
-                <div>
-                  <h3 className="font-medium">{category.name}</h3>
-                  <p className="text-sm text-gray-500">{category.count} services</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
-    </div>
+    <Carousel
+      opts={{
+        align: 'start',
+        loop: true,
+      }}
+      plugins={[
+        Autoplay({
+          delay: 3000,
+        }),
+      ]}
+      className="w-full"
+    >
+      <CarouselContent>
+        {categories.map((category) => (
+          <CarouselItem key={category.id} className="md:basis-1/3 lg:basis-1/4">
+            <Link href={`/categories/${category.name.toLowerCase().replace(' & ', '-')}`}>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative h-16 w-16">
+                      <Image
+                        src={category.image}
+                        alt={category.name}
+                        fill
+                        className="object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">{category.name}</h3>
+                      <p className="text-sm text-gray-500">{category.count} services</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+    </Carousel>
   )
 }
 
